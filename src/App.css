@@ -1,38 +1,70 @@
 .App {
   text-align: center;
+  background-color: #0a2533;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  color: #fcfcfc;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+#videoPlayer {
+  grid-column: 2;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+#videoName {
+  flex: 1 100%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+#timestampsList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background-color: #16d592;
+  color: #fcfcfc;
+}
+
+.timestamp {
+  display: grid;
+  grid-template-columns: auto auto;
+}
+
+#videoPage {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  position: fixed;
+  padding: 0;
+  margin: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#videoList {
+  grid-column: 1;
+  border-right: 3px solid #16d592;
+}
+
+#vid {
+  border: 1px solid #16d592;
+}
+
+li {
+  margin: 10px;
+}
+
+a {
+  color: #51a5eb;
 }
