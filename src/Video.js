@@ -1,10 +1,11 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { getDownloadURL, ref } from "firebase/storage";
+import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { cs, fs } from "./Firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc } from "firebase/firestore";
 import Timestamp from "./Timestamp";
 import Videos from "./Videos";
+import { useNavigate } from "react-router-dom";
 
 function Video() {
   const videoName =
@@ -14,13 +15,15 @@ function Video() {
     ) +
     " | " +
     window.location.href.substring(window.location.href.lastIndexOf("%") + 3);
+  let email = localStorage.getItem("email");
   const [video, setVideo] = useState();
   const [timestamps, setTimestamps] = useState([]);
   const [done, setDone] = useState([]);
   const [text, setText] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const pathReference = ref(cs, `${videoName}.mp4`);
+    const pathReference = ref(cs, `${email}/${videoName}`);
     getDownloadURL(pathReference).then((url) => {
       setVideo(
         <video id="vid" width="340" height="600" controls>
@@ -32,11 +35,19 @@ function Video() {
   }, []);
 
   async function getTimestamps() {
-    const docRef = doc(fs, "Video Timestamps", videoName);
+    const docRef = doc(fs, email, videoName);
     const docSnap = await getDoc(docRef);
     setTimestamps(docSnap.data().timestamps);
     setDone(docSnap.data().done);
     setText(docSnap.data().notes);
+  }
+
+  async function deleteVideo() {
+    const docRef = doc(fs, email, videoName);
+    const pathReference = ref(cs, `${email}/${videoName}`);
+    deleteDoc(docRef);
+    deleteObject(pathReference);
+    navigate("/");
   }
 
   return (
@@ -62,6 +73,7 @@ function Video() {
             ))}
           </ul>
         </div>
+        <button id="delete" onClick={deleteVideo}>Delete Video</button>
       </div>
     </div>
   );

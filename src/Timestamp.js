@@ -6,6 +6,7 @@ import { updateDoc, doc, getDoc } from "firebase/firestore";
 
 function Timestamp(props) {
   let time = props.timestamp;
+  let email = localStorage.getItem("email");
   const videoName =
     window.location.href.substring(
       window.location.href.lastIndexOf("/") + 1,
@@ -25,12 +26,12 @@ function Timestamp(props) {
   }, [typing]);
 
   async function handleSave() {
-    const docRef = doc(fs, "Video Timestamps", videoName);
+    const docRef = doc(fs, email, videoName);
     const docSnap = await getDoc(docRef);
     let notesArray = docSnap.data().notes;
     notesArray[index] = text;
     try {
-      await updateDoc(doc(fs, "Video Timestamps", videoName), {
+      await updateDoc(doc(fs, email, videoName), {
         notes: notesArray,
       });
     } catch (e) {
@@ -63,19 +64,19 @@ function Timestamp(props) {
   }
 
   async function toggleProgress() {
-    const docRef = doc(fs, "Video Timestamps", videoName);
+    const docRef = doc(fs, email, videoName);
     const docSnap = await getDoc(docRef);
     let doneArray = docSnap.data().done;
     if (done === "done") {
       setDone("inProgress");
       doneArray[index] = false;
-      await updateDoc(doc(fs, "Video Timestamps", videoName), {
+      await updateDoc(doc(fs, email, videoName), {
         done: doneArray,
       });
     } else {
       setDone("done");
       doneArray[index] = true;
-      await updateDoc(doc(fs, "Video Timestamps", videoName), {
+      await updateDoc(doc(fs, email, videoName), {
         done: doneArray,
       });
     }
@@ -103,7 +104,7 @@ function Timestamp(props) {
       )}
       <textarea
         name={time}
-        rows={10}
+        rows={5}
         cols={50}
         value={text}
         onChange={handleChange}
